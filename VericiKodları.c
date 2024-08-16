@@ -8,20 +8,31 @@
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 #define OLED_RESET    -1 // Reset pin # (or -1 if sharing Arduino reset pin)
 
-int xPozisyon;
-int yPozisyon;
-int butonDurum;
+int xPozisyonA;
+int yPozisyonA;
 
-int xPin = A1; 
-int yPin = A2; 
+int xPozisyonB;
+int yPozisyonB;
+int butonDurumA;
+int butonDurumB;
 
+int butonPinA = 5; 
+int butonPinB = 4; 
+
+
+int xPinA = A7;
+int yPinA = A3;
+
+int xPinB = A0; 
+int yPinB = A1; 
 
 struct Data {
   int joystickX1;
   int joystickY1;
   int joystickX2;
   int joystickY2;
-  int buttonState;
+  int buttonStateA;
+  int buttonStateB;
 };
 
 Data dataToSend;
@@ -37,9 +48,14 @@ void setup()
 {
   Serial.begin(9600);  // Seri haberleşmeyi başlat
   Serial.println("Deneme");
-  
-  pinMode(xPin, INPUT);
-  pinMode(yPin, INPUT);
+  pinMode(butonPinA, INPUT_PULLUP);
+  pinMode(butonPinB, INPUT_PULLUP);
+
+  pinMode(xPinA, INPUT);
+  pinMode(yPinA, INPUT);
+  pinMode(xPinB, INPUT);
+  pinMode(yPinB, INPUT);
+
 
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x64
     Serial.println(F("SSD1306 allocation failed"));
@@ -58,38 +74,57 @@ void setup()
 
 void loop()
 {
-  
+  dataToSend.joystickX1 = map(analogRead(A7), 0, 1023, -5, 5);
+  dataToSend.joystickY1 = map(analogRead(A3), 0, 1023, -5, 5);
   dataToSend.joystickX1 = map(analogRead(A0), 0, 1023, -5, 5);
   dataToSend.joystickY1 = map(analogRead(A1), 0, 1023, -5, 5);
+  butonDurumA = digitalRead(butonPinA);
+  butonDurumB = digitalRead(butonPinB);
+ 
   
-  //dataToSend.joystickX1 = map(analogRead(A0), 0, 1023, -5, 5);
+  xPozisyonA = analogRead(xPinA);
+  yPozisyonA = analogRead(yPinA);
+  xPozisyonB = analogRead(xPinB);
+  yPozisyonB = analogRead(yPinB);
 
-  xPozisyon = analogRead(xPin);
-  yPozisyon = analogRead(yPin);
+  Serial.print(" | Buton Durum: ");
+  Serial.println(butonDurumA);
 
-  char mesajX[20];
-  char mesajY[20];
+  Serial.print(" | Buton Durum: ");
+  Serial.println(butonDurumB);
+ 
+  char mesajXA[20];
+  char mesajYA[20];
+
+  char mesajXB[20];
+  char mesajYB[20];
 
   // X ve Y pozisyonlarını formatlı şekilde hazırlama
-  sprintf(mesajX, "x: %d", xPozisyon);
-  sprintf(mesajY, "y: %d", yPozisyon);
+  sprintf(mesajXA, "x: %d", xPozisyonA);
+  sprintf(mesajYA, "y: %d", yPozisyonA);
+    sprintf(mesajXB, "x: %d", xPozisyonB);
+  sprintf(mesajYB, "y: %d", yPozisyonB);
 
-  Serial.println(mesajX);
-  Serial.println(mesajY);
+  Serial.println(mesajXA);
+  Serial.println(mesajYA);
+  Serial.println(mesajXB);
+  Serial.println(mesajYB);
 
   display.clearDisplay();
-  display.setTextSize(2); // 2X ölçekli metin
+  display.setTextSize(1,3); // 2X ölçekli metin
   display.setTextColor(WHITE);
   display.setCursor(10, 0);
-  display.println(mesajX); // X pozisyonunu ekranda göster
+  display.println(mesajXA); // X pozisyonunu ekranda göster
   display.display();
-  display.setCursor(10, 30); // Y pozisyonunu ikinci satırda göster
-  display.println(mesajY);
+  display.setCursor(10, 25); // Y pozisyonunu ikinci satırda göster
+  display.println(mesajYA);
   display.display();
-  const char text[] = "Deneme ! "; // Mesaj en fazla 32 karakter olabilir
+  display.setCursor(65, 0); // Y pozisyonunu ikinci satırda göster
+  display.println(mesajXB);
+  display.display();
+  display.setCursor(65, 25); // Y pozisyonunu ikinci satırda göster
+  display.println(mesajYB);
+  display.display();
 
   radio.write(&dataToSend, sizeof(dataToSend));
- 
-
-  
 }
