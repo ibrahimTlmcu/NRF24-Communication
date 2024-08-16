@@ -21,8 +21,10 @@ struct Data {
   int joystickY1;
   int joystickX2;
   int joystickY2;
-  int buttonState;
+  int buttonStateA;
+  int buttonStateB;
 };
+
 
 Data receivedData;
 
@@ -92,7 +94,7 @@ void loop()
     Serial.print(", ");
     Serial.println(receivedData.joystickY2);
     Serial.print("Button State: ");
-    Serial.println(receivedData.buttonState ? "Pressed" : "Released");
+    Serial.println(receivedData.buttonStateA ? "Pressed" : "Released");
  
   }
   else{
