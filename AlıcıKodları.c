@@ -15,6 +15,19 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 //NRF24L01
 RF24 radio(9, 8);  // CE, CSN
 
+
+struct Data {
+  int joystickX1;
+  int joystickY1;
+  int joystickX2;
+  int joystickY2;
+  int buttonState;
+};
+
+Data receivedData;
+
+
+
 //verici ile alıcının kanal isimleri aynı olmalıdır
 const byte address[8] = "robolink";
 
@@ -41,29 +54,53 @@ void setup()
 
 void loop()
 {
+
+
+  
   //eğer data geldiyse okumaya başla
   if (radio.available())
   {
     char text[32] = {0}; //en fazla 32 karakter bir veri alabileceğinden dolayı, 32 karakterlik 0 lar kümesi oluşturduk. 
     //Gelen tüm karakterleri buraya sırayla geçirmiş olacağız 
-    
-    radio.read(&text, sizeof(text));                                                                                                                                          
-    display.clearDisplay();
-    display.setTextSize(2); // 2X scaled text
-    display.setTextColor(WHITE);
-    display.setCursor(10, 0);
-    display.println(text); // Display received text
-    display.display(); // Update the display
-    Serial.println(text); //Seri ekrana alınan veriyi yazdır
-    delay(10);
+     radio.read(&receivedData, sizeof(receivedData));                                                                                                                                  
+    // Verileri seri monitörde göster
+    Serial.print("Joystick 1 (X, Y): ");
+    Serial.print(receivedData.joystickX1);
+  char mesajX[20];
+  char mesajY[20];
+
+
+
+  sprintf(mesajX, "x: %d", receivedData.joystickX1);
+  sprintf(mesajY, "y: %d", receivedData.joystickY1);
+
+  display.clearDisplay();
+  display.setTextSize(2); // 2X ölçekli metin
+  display.setTextColor(WHITE);
+  display.setCursor(10, 0);
+  display.println(mesajX); // X pozisyonunu ekranda göster
+
+  display.setCursor(10, 30); // Y pozisyonunu ikinci satırda göster
+  display.println(mesajY);
+
+  display.display();
+
+    Serial.print(", ");
+    Serial.print(receivedData.joystickY1);
+    Serial.print(" | Joystick 2 (X, Y): ");
+    Serial.print(receivedData.joystickX2);
+    Serial.print(", ");
+    Serial.println(receivedData.joystickY2);
+    Serial.print("Button State: ");
+    Serial.println(receivedData.buttonState ? "Pressed" : "Released");
+ 
   }
   else{
-delay(10);
+  
     display.clearDisplay();
     display.setTextSize(2); // 2X scaled text
     display.setTextColor(WHITE);
     display.setCursor(10, 0);
-   
     display.display(); // Update the display
     display.println("Basarisiz !! "); //Seri ekrana alınan veriyi yazdır                                                                                                                                    
     
