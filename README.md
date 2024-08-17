@@ -2,12 +2,13 @@ NRF24L01 + PA + LNA SMA Anten 2.4 GHz ile 3 Joystick ve Buton Kontrollü Kumanda
 Proje Hakkında
 Bu projede, NRF24L01 + PA + LNA SMA anten 2.4 GHz modülünü kullanarak kablosuz iletişim sağlayan bir kumanda devresi tasarladım. Devre, 3 adet joystick ve bir buton ile çeşitli cihazları uzaktan kontrol etmek için kullanılabilir. Özellikle RC araçlar, robotik projeler veya diğer gömülü sistemlerde bu tür bir kumanda oldukça kullanışlıdır.
 
-Kullanılan Malzemeler \n
-Arduino Nano: Merkezi işlemci birimi olarak kullanıldı.
-NRF24L01 + PA + LNA SMA Anten 2.4 GHz: Uzun menzilli ve güçlü kablosuz iletişim sağlamak için tercih edildi.
-3 Adet Joystick: İki eksenli hareket kontrolü için kullanıldı.
-1 Adet Buton: İlave kontrol girişi olarak kullanıldı.
-OLED Ekran: Geri bildirim ve durum bilgisi sağlamak amacıyla kullanıldı.
+
+## Kullanılan Malzemeler
+- Arduino Nano
+- NRF24L01 + PA + LNA SMA Anten 2.4 GHz
+- 3 Adet Joystick
+- 1 Adet Buton
+- OLED Ekran
 Devrenin Çalışma Prensibi
 Bu kumanda devresi, joystick'ler aracılığıyla iki eksende (X ve Y) hareketleri algılayarak NRF24L01 + PA + LNA SMA anten modülü üzerinden bu verileri kablosuz olarak gönderir. Her bir joystick farklı bir hareketi veya işlevi kontrol edebilir. Buton ise belirli bir komutu göndermek için kullanılabilir. OLED ekran, cihazın mevcut durumunu veya gönderilen verileri görüntülemek için kullanılır.
 
