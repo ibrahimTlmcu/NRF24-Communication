@@ -8,6 +8,8 @@
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 #define OLED_RESET    -1 // Reset pin # (or -1 if sharing Arduino reset pin)
 
+
+//Joystick ve uzerinde bulunan butonlar
 int xPozisyonA;
 int yPozisyonA;
 
@@ -20,11 +22,18 @@ int butonPinA = 5;
 int butonPinB = 4; 
 
 
+
 int xPinA = A7;
 int yPinA = A3;
 
 int xPinB = A0; 
 int yPinB = A1; 
+
+
+//Harici Buton 
+const int buttonPin = 7; 
+int buttonState = 0;  
+
 
 struct Data {
   int joystickX1;
@@ -39,6 +48,7 @@ Data dataToSend;
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 //NRF24L01 
+
 RF24 radio(9, 8);  // CE, CSN
 
 // Haberleşme kanalı (herhangi bir "string" olabilir)
@@ -56,6 +66,7 @@ void setup()
   pinMode(xPinB, INPUT);
   pinMode(yPinB, INPUT);
 
+  pinMode(buttonPin, INPUT); // Buton pini giriş olarak ayarlanıyor
 
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x64
     Serial.println(F("SSD1306 allocation failed"));
@@ -80,7 +91,10 @@ void loop()
   dataToSend.joystickY1 = map(analogRead(A1), 0, 1023, -5, 5);
   butonDurumA = digitalRead(butonPinA);
   butonDurumB = digitalRead(butonPinB);
- 
+  
+
+  //Bu buton suan bosta kullanilmak istenirse struct kismina eklenip gonderilebilir.
+  buttonState = digitalRead(buttonPin);
   
   xPozisyonA = analogRead(xPinA);
   yPozisyonA = analogRead(yPinA);
