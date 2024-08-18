@@ -17,7 +17,8 @@ Devre Şeması
 ![image](https://github.com/user-attachments/assets/1aabae18-ec42-4a12-ba2c-859de21e1d5c)
 
 
-![Gorsel2](https://github.com/user-attachments/assets/12e92bd3-829c-47df-a12f-d6e8214c909c)
+![image](https://github.com/user-attachments/assets/cd200721-d26c-4b28-b643-132cc4993dc3)
+
 
 Arduino IDE kullanarak devrenin yazılımını geliştirdim. Joystick'lerin X ve Y eksenlerindeki analog verileri okuyarak NRF24L01 + PA + LNA SMA anten modülü üzerinden diğer cihazlara gönderiyorum. Kodlama sırasında, veri iletiminde kararlılığı sağlamak için modülün güç gereksinimlerine dikkat ettim.
 
